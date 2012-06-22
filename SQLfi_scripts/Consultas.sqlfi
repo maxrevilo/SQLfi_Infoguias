@@ -1,0 +1,159 @@
+-------------------------------------------------------
+-- Predicado: Responde la pregunta si dos lugares estan cerca dados sus puntos geograficos
+-- Primero se calcula la cercania entre dos puntos (Tarzilandia e Infoguia)
+-- Esta distancia es 5.226033244466032
+CREATE FUZZY PREDICATE cerca ON 0..1200000 AS (0 , 0 , 10 , infinit);
+
+-- desc cerca;
+
+-- Predicado Difuso Conjunto
+-------------------------
+
+-- Nombre Termino: cerca
+-- Dominio  : 0.0..1200000.0
+-- Conjunto Difuso: (INFINITO, INFINITO, 10.0, INFINITO)
+
+SELECT * FROM tabla WHERE cerca = 5.226033244466032;
+
+
+-------------------------------------------------------
+
+-- Predicado: Responde la pregunta si dos ciudades estan cerca
+CREATE COMPARATOR cercania_ciudad ON nombreciudad AS (x, y) IN {
+(Caracas, Maracay) / 0.8, (Maracay, Caracas) / 0.8, (Barquisimeto,
+Caracas) / 0.2, (Caracas, Barquisimeto) / 0.2, (Caracas, Maracaibo) /
+0.0, (Maracaibo, Caracas) / 0.0, (Maracaibo, Barquisimeto) / 0.9,
+(Barquisimeto, Maracaibo) / 0.9, (Maracay, Barquisimeto) / 0.4,
+(Barquisimeto, Maracay) / 0.4, (Maracay, Maracaibo) / 0.3, (Maracaibo,
+Maracay) / 0.3 };
+
+-- desc cercania_ciudad
+
+-- Comparador Difuso Relacion
+--------------------------
+
+-- Nombre Termino : cercania_ciudad
+-- Tipo Comparador: (X, Y)
+-- Dominio  : nombreciudad
+-- Relacion : {(Barquisimeto, Caracas)/0.2, (Barquisimeto, Maracaibo)/0.9, (Barquisimeto, Maracay)/0.4, (Caracas, Barquisimeto)/0.2, (Caracas, Maracaibo)/0.0, (Caracas, Maracay)/0.8, (Maracaibo, Barquisimeto)/0.9, (Maracaibo, Caracas)/0.0, (Maracaibo, Maracay)/0.3, (Maracay, Barquisimeto)/0.4, (Maracay, Caracas)/0.8, (Maracay, Maracaibo)/0.3}
+
+
+--Consulta Difusa
+---------------
+SELECT * FROM ciudades WHERE nombreciudad comparator_cercania_ciudad
+'Maracaibo';
+
+--Consulta Traducida
+------------------
+--SELECT *
+--FROM ciudades
+--WHERE (((nombreciudad = 'Barquisimeto') AND ('Maracaibo' =
+'Caracas')) OR ((nombreciudad = 'Barquisimeto') AND ('Maracaibo' =
+'Maracaibo')) OR ((nombreciudad = 'Barquisimeto') AND ('Maracaibo' =
+'Maracay')) OR ((nombreciudad = 'Caracas') AND ('Maracaibo' =
+'Barquisimeto')) OR ((nombreciudad = 'Caracas') AND ('Maracaibo' =
+'Maracay')) OR ((nombreciudad = 'Maracaibo') AND ('Maracaibo' =
+'Barquisimeto')) OR ((nombreciudad = 'Maracaibo') AND ('Maracaibo' =
+'Maracay')) OR ((nombreciudad = 'Maracay') AND ('Maracaibo' =
+'Barquisimeto')) OR ((nombreciudad = 'Maracay') AND ('Maracaibo' =
+'Caracas')) OR ((nombreciudad = 'Maracay') AND ('Maracaibo' =
+'Maracaibo')))
+
+--MU    codigociudad    codigotlf       nombreciudad
+--0.900 3       0251    Barquisimeto
+--0.300 2       0243    Maracay
+
+--seleccionada 2 fila(s).
+-------------------------------------------------------
+
+-- Predicado: Responde la pregunta si dos estados estan cerca
+CREATE COMPARATOR cercania_estado ON nombreestado AS (x, y) IN {
+(DistritoCapital, Aragua) / 0.8, (Aragua, DistritoCapital) / 0.8,
+(Lara, DistritoCapital) / 0.2, (DistritoCapital, Lara) / 0.2,
+(DistritoCapital, Zulia) / 0.0, (Zulia, DistritoCapital) / 0.0,
+(Zulia, Lara) / 0.9, (Lara, Zulia) / 0.9, (Aragua, Lara) / 0.4, (Lara,
+Aragua) / 0.4, (Aragua, Zulia) / 0.3, (Zulia, Aragua) / 0.3 };
+
+-- desc cercania_estado
+
+-- Comparador Difuso Relacion
+--------------------------
+
+-- Nombre Termino : cercania_estado
+-- Tipo Comparador: (X, Y)
+-- Dominio  : nombreestado
+-- Relacion : {(Aragua, DistritoCapital)/0.8, (Aragua, Lara)/0.4,
+(Aragua, Zulia)/0.3, (DistritoCapital, Aragua)/0.8, (DistritoCapital,
+Lara)/0.2, (DistritoCapital, Zulia)/0.0, (Lara, Aragua)/0.4, (Lara,
+DistritoCapital)/0.2, (Lara, Zulia)/0.9, (Zulia, Aragua)/0.3, (Zulia,
+DistritoCapital)/0.0, (Zulia, Lara)/0.9}
+
+--Consulta Difusa
+---------------
+SELECT * FROM estados WHERE nombreestado comparator_cercania_estado 'Zulia';
+
+--Consulta Traducida
+------------------
+--SELECT *
+--FROM estados
+--WHERE (((nombreestado = 'Aragua') AND ('Zulia' = 'DistritoCapital'))
+OR ((nombreestado = 'Aragua') AND ('Zulia' = 'Lara')) OR
+((nombreestado = 'Aragua') AND ('Zulia' = 'Zulia')) OR ((nombreestado
+= 'DistritoCapital') AND ('Zulia' = 'Aragua')) OR ((nombreestado =
+'DistritoCapital') AND ('Zulia' = 'Lara')) OR ((nombreestado = 'Lara')
+AND ('Zulia' = 'Aragua')) OR ((nombreestado = 'Lara') AND ('Zulia' =
+'DistritoCapital')) OR ((nombreestado = 'Lara') AND ('Zulia' =
+'Zulia')) OR ((nombreestado = 'Zulia') AND ('Zulia' = 'Aragua')) OR
+((nombreestado = 'Zulia') AND ('Zulia' = 'Lara')))
+
+--MU    codigoestado    nombreestado
+--0.900 4       Lara
+--0.300 2       Aragua
+
+--seleccionada 2 fila(s).
+
+--------------------------------------------
+
+CREATE COMPARATOR parecido ON  AS (x, y) IN { (Restaurante, Arepera) /
+0.8, (Arepera, Restaurante) / 0.8, (Arepera, Zapateria) / 0.0,
+(Zapateria, Arepera) / 0.0, (Zapateria, Restaurante) / 0.0,
+(Restaurante, Zapateria) / 0.0};
+
+--desc parecido;
+
+--Comparador Difuso Relacion
+--------------------------
+
+--Nombre Termino : parecido
+--Tipo Comparador: (X, Y)
+--Dominio  : nombrecategoria
+--Relacion : {(Arepera, Restaurante)/0.8, (Arepera, Zapateria)/0.0,
+(Restaurante, Arepera)/0.8, (Restaurante, Zapateria)/0.0, (Zapateria,
+Arepera)/0.0, (Zapateria, Restaurante)/0.0}
+
+SELECT emp.nombreempresa FROM paginacioncategorias pag,empresas
+emp,categorias cat WHERE pag.empresas_codigoempresa =
+emp.codigoempresa AND pag.codigocategoria = cat.codigocategoria AND
+cat.nombrecategoria comparator_parecido 'Restaurante';
+
+--Consulta Difusa
+---------------
+--select emp.nombreempresa from paginacioncategorias pag,empresas
+emp,categorias cat where pag.empresas_codigoempresa =
+emp.codigoempresa and pag.codigocategoria = cat.codigocategoria and
+cat.nombrecategoria comparator_parecido 'Restaurante';
+
+--Consulta Traducida
+------------------
+--SELECT emp.nombreempresa
+--FROM paginacioncategorias pag, empresas emp, categorias cat
+--WHERE pag.empresas_codigoempresa = emp.codigoempresa AND
+pag.codigocategoria = cat.codigocategoria AND (((cat.nombrecategoria =
+'Arepera') AND ('Restaurante' = 'Restaurante')) OR
+((cat.nombrecategoria = 'Restaurante') AND ('Restaurante' =
+'Arepera')))
+
+--MU    nombreempresa
+--0.800 Arepera Socialista Negro Primero
+
+--seleccionada 1 fila(s).
