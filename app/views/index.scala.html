@@ -1,5 +1,45 @@
-@(message: String)
+@styles = {
+    <link rel='stylesheet' media='screen' href='@routes.Assets.at("stylesheets/combobox.css")'>
+}
+@scripts = {
+    <script src='@routes.Assets.at("javascripts/main/index/index.js")' type='text/javascript'></script>
+    <script src='@routes.Assets.at("javascripts/main/index/comboBox.js")' type='text/javascript'></script>
+}
 
-@main("Prueba SQLfi") {
-    @Html(message)
+@main("Prueba SQLfi")(styles)(scripts) {
+        <form action="results" method="GET" enctype="multipart/form-data">
+            <div id="what_cont">
+                <input id="what"  type="text" placeholder="¿Que buscas?" name="what" >
+
+                <div id="whatHow">
+                    <input type="radio" id="nam_rad" name="what_how" checked="checked" value="nam" /><label for="nam_rad">Nombre</label>
+                    <input type="radio" id="cat_rad" name="what_how" value="cat" /><label for="cat_rad">Categoria</label>
+
+                    <input type="checkbox" id="cat_diff" name="diff" /><label for="cat_diff"></label>
+                </div>
+            </div>
+
+            <div id="where_cont">
+                <label for="where1">Donde: </label>
+                <select id="where1" type="text" name="where" >
+                </select></br>
+
+
+                <select id="where2" type="text" name="where" >
+                    <option value="0">Todas las ciudades</option>
+                    <option value="1">Gran Caracas</option>
+                    <option value="2">Cumana</option>
+                </select></br>
+
+                <select id="where3" type="text" name="where" >
+                    <option value="0">Todas las urbanizaciones</option>
+                    <option value="1">Recreo</option>
+                    <option value="2">Altamira</option>
+                    <option value="3">Chacao</option>
+                </select>
+
+            </div>
+
+            <input type="submit" value="Buscar">
+        </form>
 }

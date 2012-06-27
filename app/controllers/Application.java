@@ -1,26 +1,25 @@
 package controllers;
 
-import play.*;
+//Play!
+import play.data.Form;
 import play.mvc.*;
-
 import views.html.*;
 
-
-import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.FieldPosition;
-import java.util.ArrayList;
-
-//import Cliente.ClienteSQLfi;
+//SQLfi
 import Cliente.ClienteSQLfiImpl;
-import conf.VariablesAmbiente;
 import Despachador.*;
+
+//Utils
+import models.SQLfiManager;
+import controllers.forms.Search;
+import java.sql.SQLException;
+
+
 
 public class Application extends Controller {
 
     public static Result fixtures() throws SQLException, Exception {
-        ClienteSQLfiImpl app = ConnectSQLfi();
+        ClienteSQLfiImpl app = SQLfiManager.ConnectSQLfi();
         String sent =
                 "CREATE COMPARATOR parecido ON categorias AS (x, y) IN { (Restaurante, Arepera) / " +
                 "0.8, (Arepera, Restaurante) / 0.8, (Arepera, Zapateria) / 0.0, " +
@@ -37,17 +36,31 @@ public class Application extends Controller {
         return redirect("/");
     }
 
-    public static Result index() throws SQLException, Exception {
-        ClienteSQLfiImpl app = ConnectSQLfi();
+    public static Result index() {
+        return ok(index.render());
+    }
 
+    public static Result results() throws SQLException, Exception {
+        Form<Search> searchForm = form(Search.class).bindFromRequest();
+
+        if(searchForm.hasErrors()) {
+            return badRequest(searchForm.errorsAsJson()); //return ok(index.render( errors = searchForm.errors() ));
+        } else {
+            Search search = searchForm.get();
+            return ok(results.render(search.what));
+        }
+
+
+        /*
         String fuzzyQuery =
                 "SELECT emp.nombreempresa FROM paginacioncategorias pag, empresas emp, categorias cat " +
-                "WHERE pag.empresas_codigoempresa = emp.codigoempresa " +
-                "AND pag.codigocategoria = cat.codigocategoria " +
-                "AND cat.nombrecategoria comparator_parecido 'Restaurante';";
+                        "WHERE pag.empresas_codigoempresa = emp.codigoempresa " +
+                        "AND pag.codigocategoria = cat.codigocategoria " +
+                        "AND cat.nombrecategoria comparator_parecido '"+get+"';";
 
-
+        ClienteSQLfiImpl app = ConnectSQLfi();
         ObjetoSQLfi obj = app.ejecutarSentencia(fuzzyQuery);
+        app.desconectarUsuarios();
 
         String result;
         if (obj instanceof ResultadoSQLfi) {
@@ -55,86 +68,7 @@ public class Application extends Controller {
         } else {
             result = ResultToString((ConjuntoResultado) obj, fuzzyQuery);
         }
-
-
-        app.desconectarUsuarios();
-
-        return ok(index.render(result));
-    }
-
-
-    private static ClienteSQLfiImpl ConnectSQLfi() throws Exception {
-        ClienteSQLfiImpl app = new ClienteSQLfiImpl();
-
-        // Se carga la configuracion SQLfi del archivo de propiedades.
-        app.cargarConfiguracion();
-
-        // Se conectan el usuario SQLfi y el usuario de aplicacion.
-        app.conectarUsuarios();
-        return app;
-    }
-
-    private static String ResultToString(ConjuntoResultado obj, String fuzzyQuery) {
-        String out = new String();
-
-        System.out.println("Consulta Difusa");
-        System.out.println("---------------");
-        System.out.println(fuzzyQuery + "\n");
-
-        /* Se imprime la instruccion ejecutada */
-        System.out.println("Consulta Traducida");
-        System.out.println("------------------");
-        System.out.println(((ConjuntoResultado) obj).obtenerInstruccion() + "\n");
-
-        int numCols = ((ConjuntoResultado) obj).obtenerMetaDatos().obtenerNumeroColumnas();
-        boolean p = ((ConjuntoResultado) obj).primero();
-
-        out += "<table><tr>";
-
-        /* Se imprime el encabezado */
-        for (int cont = 1; cont <= numCols; cont++) {
-            out += "<th>";
-            out += ((ConjuntoResultado) obj).obtenerMetaDatos().obtenerEtiquetaColumna(cont);
-            out += "</th>";
-        }
-
-        out += "</tr>";
-
-        DecimalFormatSymbols dfs = new DecimalFormatSymbols();
-        dfs.setDecimalSeparator('.');
-        DecimalFormat df = new DecimalFormat(VariablesAmbiente.FUZZY_MU_DECIMAL_FORMAT, dfs);
-
-        Object objetoResultado;
-        ((ConjuntoResultado) obj).antesDelPrimero();
-        /* Se imprimen las filas */
-        while (((ConjuntoResultado) obj).proximo()) {
-            out += "<tr>";
-            for (int cont = 1; cont <= numCols; cont++) {
-                out += "<td>";
-                objetoResultado = ((ConjuntoResultado) obj).obtenerObjeto(cont);
-                if ((objetoResultado != null) && (objetoResultado instanceof Mu)) {
-                    out += df.format(((Mu) objetoResultado).obtenerValorMu(),
-                            new StringBuffer(""),
-                            new FieldPosition(0));
-                } else {
-                    out += objetoResultado;
-                }
-                out += "</td>";
-            }
-            out += "</tr>";
-        }
-
-        out += "</table>";
-
-        if (((ConjuntoResultado) obj).obtenerNumeroFilas() == 0) {
-            System.out.print("\nfilas no seleccionadas.");
-        } else {
-            System.out.print("\nseleccionada ");
-            System.out.print(((ConjuntoResultado) obj).obtenerNumeroFilas());
-            System.out.print(" fila(s).");
-        }
-        ((ConjuntoResultado) obj).cerrar();
-        return out;
+        */
     }
 
 }

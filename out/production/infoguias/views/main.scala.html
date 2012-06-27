@@ -1,4 +1,4 @@
-@(title: String = "Infoguias")(styles: Html)(scripts: Html)(content: Html)
+@(title: String)(content: Html)
 <!doctype html>
 <!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
@@ -20,22 +20,18 @@
 
     <!-- Estilos: -->
     <link rel='stylesheet' media='screen' href='@routes.Assets.at("stylesheets/main.css")'>
-    <link rel='stylesheet' media='screen' href='@routes.Assets.at("stylesheets/ui-lightness/jquery-ui-1.8.21.custom.css")'/>
-    @styles
+    <link rel='stylesheet' media='screen' href='@routes.Assets.at("stylesheets/themename/jquery-ui-1.8.21.custom.css")'/>
 </head>
 <body>
-<!--[if lt IE 7]>
-    <p class=chromeframe>Tu navegador de internet es <em>antiguo!</em> <a href="http://browsehappy.com/">
+<!--
+    [if lt IE 7]><p class=chromeframe>Tu navegador de internet es <em>antiguo!</em> <a href="http://browsehappy.com/">
     Actualizate a un navegador más reciente</a> o <a href="http://www.google.com/chromeframe/?redirect=true">instala
-    Google Chrome Frame</a> para poder experimentar este sitio web a plenitud.</p>
-<![endif]-->
+    Google Chrome Frame</a> para poder experimentar este sitio web a plenitud.</p><![endif]
+    -->
 
 @content
 
-<!-- Scripts: -->
-<script src='@routes.Assets.at("javascripts/jquery-1.7.2.min.js")' type='text/javascript'></script>
-<script src='@routes.Assets.at("javascripts/jquery-ui-1.8.21.custom.min.js")' type='text/javascript'></script>
-@scripts
+<script src='@routes.Assets.at("javascripts/jquery-1.7.1.min.js")' type='text/javascript'></script>
 
 <!--
   <script> var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']]; (function(d,t){var
