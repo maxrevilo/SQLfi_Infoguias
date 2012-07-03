@@ -8,6 +8,7 @@ GET /fixtures           controllers.Application.fixtures()
 # HTML
 GET /                   controllers.Application.index()
 GET /results            controllers.Application.results()
+GET /query_map          controllers.Application.query_map()
 
 # AJAX
 GET /categories         controllers.Ajax.categories()
@@ -16,4 +17,4 @@ GET /cities             controllers.Ajax.cities()
 GET /neighborhoods      controllers.Ajax.neighborhoods()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /assets/*file            controllers.Assets.at(path="/public", file)

@@ -96,6 +96,7 @@ $.widget( "ui.combobox", {
 						input.autocomplete( "search", "" );
 						input.focus();
 					});
+
 			},
 
 			show: function() {

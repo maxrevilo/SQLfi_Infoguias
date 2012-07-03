@@ -1,4 +1,4 @@
-@(message: String)
+@(results: org.codehaus.jackson.JsonNode)
 
 @styles = {
 }
@@ -7,5 +7,18 @@
 }
 
 @main("Prueba SQLfi")(styles)(scripts) {
-    @Html(message)
+    <ul>
+    @for(result <- results.getElements()) {
+        <li>
+            <label>
+                <strong>Mu:</strong>
+                @result.get("MU").asText()
+            </label>
+            <label>
+                <strong>Empresa:</strong>
+                @result.get("nombreempresa").asText()
+            </label>
+        </li>
+    }
+    </ul>
 }
