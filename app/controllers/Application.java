@@ -77,7 +77,7 @@ public class Application extends Controller {
             String fuzzyQuery;
 
             if(search.isByCategory()) {
-                if(search.isDiffuse()) {
+                if(search.Similars()) {
 
                     switch (search.region()) {
                         case COUNTRY:

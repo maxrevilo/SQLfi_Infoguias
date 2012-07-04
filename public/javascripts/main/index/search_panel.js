@@ -37,21 +37,31 @@ $(function() {
         disabled: !$("#cat_rad")[0].checked
     });
 
-
-    $("#whatHow").buttonset();
-
-    $("#cat_diff").button({disabled: !$("#cat_rad")[0].checked});
-
     $("#nam_rad").change(function(){
         $("#what").autocomplete("disable");
-        $("#cat_diff").button("disable");
+        $("#cat_similar").hide();
     });
 
     $("#cat_rad").change(function(){
         $("#what").autocomplete("enable");
-        $("#cat_diff").button("enable");
+        $("#cat_similar").show();
     });
 
+    $("#query_map_cont").dialog({
+        autoOpen  : false,
+        modal     : true,
+        show      : "slide",
+        height    : "auto",
+        width     : "auto",
+        resizable : false,
+        open : function() {
+            query_map();
+        }
+    });
+    $("#query_map_btn").on("click", function() {
+        $( "#query_map_cont" ).dialog( "open" );
+        return false;
+    });
 
 
 
@@ -63,6 +73,9 @@ $(function() {
             $( "#where_region" ).val("state");
 
             if($(this).val() == "-1") {
+
+            } else if($(this).val() == "-2") {
+                $( "#query_map_cont" ).dialog( "open" );
             } else {
                 resetOptions($( "#where2" ));
                 $( "#where2" ).combobox("show");
@@ -117,8 +130,6 @@ $(function() {
         }
     });
 
-    $( "#whereHow" ).buttonset();
-
     $( "#buscar_btn" ).button();
 
     $( "#search_form" ).submit(function() {
@@ -146,7 +157,8 @@ $(function() {
             dataType : "json"
         }).done(function(data) {
             var arr = data;
-            arr.unshift({label:"Todos los estados", value:"-1"});
+            arr.unshift({label:"Busqueda por mapa", value:"-2"});
+            arr.unshift({label:"Todo el pais", value:"-1"});
             removeOptions($( "#where1" ));
             addOptions($( "#where1" ), data);
         });

@@ -3,10 +3,17 @@
 @styles = {
 }
 
-@scripts = {
+@pre_scripts = {
+    <script type="text/javascript" src='@routes.Assets.at("images/funcionespagina.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.at("images/casilla.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.at("images/ajax.js")'></script>
+    <script type="text/javascript" src='@routes.Assets.at("images/encuesta.js")'></script>
 }
 
-@main("Prueba SQLfi")(styles)(scripts) {
+@post_scripts = {
+}
+
+@main("Prueba SQLfi")(styles)(pre_scripts) {
     <ul>
     @for(result <- results.getElements()) {
         <li>
@@ -21,4 +28,4 @@
         </li>
     }
     </ul>
-}
+}(post_scripts)

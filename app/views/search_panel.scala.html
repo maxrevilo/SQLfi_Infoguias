@@ -1,4 +1,4 @@
-<script src='@routes.Assets.at("javascripts/main/index/index.js")' type='text/javascript'></script>
+<script src='@routes.Assets.at("javascripts/main/index/search_panel.js")' type='text/javascript'></script>
 <script src='@routes.Assets.at("javascripts/main/index/comboBox.js")' type='text/javascript'></script>
 
 <style>
@@ -19,24 +19,30 @@
 
 </style>
 
+<div id="query_map_cont" title ="Delimitar Cercanía de la busqueda">
+    @query_map()
+</div>
+
 <div class="search_panel">
     <form id="search_form" action="results" method="GET" enctype="multipart/form-data">
 
         <div id="what_cont">
             <label for="where1"><strong>Que: </strong></label></br>
-            <input id="what"  type="text" placeholder="¿Que buscas?" name="what" >
+            <input id="what"  type="search" placeholder="¿Que buscas?" name="what" required="required" autofocus="autofocus">
 
             <div id="whatHow">
                 <input type="radio" id="nam_rad" name="what_how" checked="checked" value="nam" /><label for="nam_rad">Nombre</label>
                 <input type="radio" id="cat_rad" name="what_how" value="cat" checked /><label for="cat_rad">Categoria</label>
 
-                <input type="checkbox" id="cat_diff" name="diff" checked /><label for="cat_diff">Similares</label>
+                <div id="cat_similar">
+                    <input type="checkbox" id="similar" name="similar" checked /><label for="similar">Similares</label>
+                </div>
             </div>
         </div>
 
         <div id="where_cont">
             <label for="where1"><strong>Donde: </strong></label>
-            <a href="javascript:open('/query_map')">Buscar en mapa</a></br>
+            <a id="query_map_btn" href="javascript://">Buscar en mapa</a></br>
             <select id="where1" type="text" name="where" >
             </select></br>
 
@@ -50,8 +56,8 @@
             <input type="hidden" id="where_region" name="where_region" value="state"/>
 
             <div id="whereHow">
-                <input type="radio" id="exact_rad" name="where_how" checked="checked" value="exact" /><label for="exact_rad">Exacto</label>
-                <input type="radio" id="near_rad" name="where_how" value="near" checked /><label for="near_rad">Cercano</label>
+                <input type="checkbox" id="near" name="near" checked="checked"/>
+                <label for="near">Cercanos</label>
             </div>
 
         </div>

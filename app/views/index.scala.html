@@ -1,11 +1,13 @@
 @styles = {
     <link rel='stylesheet' media='screen' href='@routes.Assets.at("stylesheets/combobox.css")'>
 }
-@scripts = {
-
+@pre_scripts = {
 }
 
-@main("Infoguia.com")(styles)(scripts) {
+@post_scripts = {
+}
+
+@main("Prueba SQLfi")(styles)(pre_scripts) {
 <div id="container_home_main">
 <div id="container_home">
 <div id="publi_der_home">
@@ -296,4 +298,5 @@
 </div>
 </div>
 </div>
-}
+
+}(post_scripts)
