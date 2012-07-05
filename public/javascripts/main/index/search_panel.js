@@ -37,6 +37,8 @@ $(function() {
         disabled: !$("#cat_rad")[0].checked
     });
 
+    $("#whereHow").hide();
+
     $("#nam_rad").change(function(){
         $("#what").autocomplete("disable");
         $("#cat_similar").hide();
@@ -72,8 +74,9 @@ $(function() {
 
             $( "#where_region" ).val("state");
 
+            $("#whereHow").show();
             if($(this).val() == "-1") {
-
+                $("#whereHow").hide();
             } else if($(this).val() == "-2") {
                 $( "#query_map_cont" ).dialog( "open" );
             } else {
@@ -129,8 +132,6 @@ $(function() {
             $( "#where_region" ).val("neighbor");
         }
     });
-
-    $( "#buscar_btn" ).button();
 
     $( "#search_form" ).submit(function() {
       if($( "#where1" ).val() == "-1" || $( "#where2" ).val() == "-1" ) {

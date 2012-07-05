@@ -95,8 +95,8 @@ public class Application extends Controller {
                                 "SELECT emp.nombreempresa " +
                                 "FROM categorias cat, paginacioncategorias pag, empresas emp, distancias_estados d_e, estados e, dataempresas data " +
                                 "WHERE " +
-                                "    ((estado2 = '"+search.where+"' AND d_e.estado1 = e.nombreestado) OR " +
-                                "    (d_e.estado2 = e.nombreestado AND estado1 = '"+search.where+"')) AND " +
+                                "    ((estado2 = '"+search.where+"' AND d_e.estado1 = e.codigoestado) OR " +
+                                "    (d_e.estado2 = e.codigoestado AND estado1 = '"+search.where+"')) AND " +
                                 "    d_e.distancia_estados = cerca_estado AND data.codigoempresa = emp.codigoempresa AND data.codigoestado = e.codigoestado AND " +
                                 "    cat.nombrecategoria comparator_similar '"+search.what+"' AND " +
                                 "    pag.codigoempresa = emp.codigoempresa AND " +
@@ -109,8 +109,8 @@ public class Application extends Controller {
                                 "FROM distancias_ciudades d, ciudades c, categorias cat, paginacioncategorias pag, empresas emp " +
                                 "WHERE " +
                                 "    distancia_ciudades = cerca_ciudad AND " +
-                                "    ((ciudad1 = '"+search.where+"' AND ciudad2 = c.nombreciudad) " +
-                                "    OR (ciudad2 = '"+search.where+"' AND ciudad1 = c.nombreciudad)) AND " +
+                                "    ((ciudad1 = '"+search.where+"' AND ciudad2 = c.codigociudad) " +
+                                "    OR (ciudad2 = '"+search.where+"' AND ciudad1 = c.codigociudad)) AND " +
                                 "    c.codigociudad = pag.codigociudad AND " +
                                 "    emp.codigoempresa = pag.codigoempresa AND " +
                                 "    cat.codigocategoria = pag.codigocategoria AND " +
@@ -145,7 +145,7 @@ public class Application extends Controller {
                 else throw new NotSupportedException();
             }
             else throw new NotSupportedException();
-
+            System.out.println("QUERY:\n"+fuzzyQuery+"\n\n");
             JsonNode jsonResults =
                     SQLfiManager.ResultToJson( (ConjuntoResultado)
                             SQLfiManager.FastQuery(

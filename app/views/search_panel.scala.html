@@ -5,7 +5,10 @@
     .search_panel {
         padding-top: 70px;
         padding-left: 20px;
+        margin-left: 50px;
     }
+
+    #search_form { height: 170px; }
 
     #what_cont, #where_cont, #submit_cont {
         display: inline-table;
@@ -17,6 +20,23 @@
         margin-top: 15px;
     }
 
+    #cat_similar
+    {
+        padding-left: 95px;
+    }
+
+    #title
+    {
+        padding-right: 82px;
+        text-align: center;
+        margin-top: -30px;
+        margin-bottom: 10px;
+    }
+
+    #as_home {
+        padding-left: 85px;
+    }
+
 </style>
 
 <div id="query_map_cont" title ="Delimitar Cercanía de la busqueda">
@@ -24,25 +44,29 @@
 </div>
 
 <div class="search_panel">
+    <div class="texto" id="title">Buscar en Infoguia.com - Paginas Amarillas</div>
+
     <form id="search_form" action="results" method="GET" enctype="multipart/form-data">
 
         <div id="what_cont">
-            <label for="where1"><strong>Que: </strong></label></br>
+            <label for="where1" class="texto">¿Qué Buscas?</label></br>
             <input id="what"  type="search" placeholder="¿Que buscas?" name="what" required="required" autofocus="autofocus">
 
-            <div id="whatHow">
+            <div id="whatHow" class="texto">
                 <input type="radio" id="nam_rad" name="what_how" checked="checked" value="nam" /><label for="nam_rad">Nombre</label>
                 <input type="radio" id="cat_rad" name="what_how" value="cat" checked /><label for="cat_rad">Categoria</label>
 
-                <div id="cat_similar">
-                    <input type="checkbox" id="similar" name="similar" checked /><label for="similar">Similares</label>
+                <div id="cat_similar" class="texto">
+                    <input type="checkbox" id="similar" name="similar" checked /><label for="similar">Similar</label>
                 </div>
             </div>
         </div>
 
         <div id="where_cont">
-            <label for="where1"><strong>Donde: </strong></label>
-            <a id="query_map_btn" href="javascript://">Buscar en mapa</a></br>
+            <label for="where1" class="texto">
+                ¿Dónde?
+                <a id="query_map_btn" href="javascript://">Buscar en mapa</a></br>
+            </label>
             <select id="where1" type="text" name="where" >
             </select></br>
 
@@ -55,14 +79,19 @@
 
             <input type="hidden" id="where_region" name="where_region" value="state"/>
 
-            <div id="whereHow">
+            <div id="whereHow" class="texto">
                 <input type="checkbox" id="near" name="near" checked="checked"/>
-                <label for="near">Cercanos</label>
+                <label for="near">Incluir Proximidades</label>
             </div>
 
         </div>
         <div id="submit_cont">
-            <input type="submit" value="Buscar" id="buscar_btn">
+            <input src='@routes.Assets.at("images/buscar.gif")' alt="Buscar" type="image" value="Buscar" id="buscar_btn">
         </div>
     </form>
+
+    <a id="as_home" href="http://paginasamarillas.infoguia.net/"
+       title="Infoguia.com - Paginas Amarillas en Internet">
+        <img src='@routes.Assets.at("images/infoguiainicio.png")' style="border: 0px none;" alt="Infoguia.com como Página de Inicio">
+    </a>
 </div>

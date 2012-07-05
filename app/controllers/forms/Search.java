@@ -19,6 +19,7 @@ public class Search {
     @Required
     public String where_region;
     public String near;
+    public String lat, lon;
 
     public boolean isByCategory() { return what_how.equals("cat"); }
     public boolean isByName()     { return what_how.equals("nam"); }
