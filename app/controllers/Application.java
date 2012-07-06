@@ -176,9 +176,10 @@ public class Application extends Controller {
             if(search.region() == Search.Region.MAP_AREA) {
                 SQLfiManager.MultipleQueries(
                         "DROP PREDICATE cerca_lat ;",
-                        "DROP PREDICATE cerca_lng ;");
+                        "DROP PREDICATE cerca_lng ;"
+                );
             }
-            return ok(results.render(jsonResults));
+            return ok(results.render(jsonResults, search.isByCategory(), search.what));
         }
     }
 

@@ -1,4 +1,4 @@
-@(results: org.codehaus.jackson.JsonNode)
+@(results: org.codehaus.jackson.JsonNode, byCategory: Boolean, pattern: String)
 
 @styles = {
 }
@@ -16,14 +16,14 @@
 @main("Prueba SQLfi")(styles)(pre_scripts) {
 
 <div id="tituloresultados2">
-    <span class="texto3">Buscando Nombre de Empresas con la frase 'TAL'</span><br>
-    <span class="titulopag"> Se han encontrado "tantas" empresas que coinciden</span>
+    <span class="texto3">Buscando Empresas por @if(byCategory){categoria}else{nombre} con la frase '@pattern'</span><br>
+    <span class="titulopag"> Se han encontrado @results.size() empresas que coinciden</span>
 </div>
 
 
 @for(result <- results.getElements()) {
 
-    <table class="empresa" border="0" cellpadding="0" cellspacing="0">
+    <table class="empresa" width="610px" border="0" cellpadding="0" cellspacing="0">
         <tbody>
         <tr>
             <td>
@@ -32,6 +32,7 @@
                     <tr>
                         <td width="6" background='@routes.Assets.at("images/Consult_files/pestanaizq_emp.gif")'</td>
                         <td class="tituloemp" background='@routes.Assets.at("images/Consult_files/pestanacentro_emp.gif")'>
+                            <strong>(@result.get("MU").asText())</strong>
                             <a class="link_emp">
 
                                 @result.get("nombreempresa").asText()
