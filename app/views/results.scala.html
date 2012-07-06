@@ -4,28 +4,102 @@
 }
 
 @pre_scripts = {
-    <script type="text/javascript" src='@routes.Assets.at("images/funcionespagina.js")'></script>
-    <script type="text/javascript" src='@routes.Assets.at("images/casilla.js")'></script>
-    <script type="text/javascript" src='@routes.Assets.at("images/ajax.js")'></script>
-    <script type="text/javascript" src='@routes.Assets.at("images/encuesta.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("images/funcionespagina.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("images/casilla.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("images/ajax.js")'></script>
+<script type="text/javascript" src='@routes.Assets.at("images/encuesta.js")'></script>
 }
 
 @post_scripts = {
 }
 
 @main("Prueba SQLfi")(styles)(pre_scripts) {
-    <ul>
-    @for(result <- results.getElements()) {
-        <li>
-            <label>
-                <strong>Mu:</strong>
-                @result.get("MU").asText()
-            </label>
-            <label>
-                <strong>Empresa:</strong>
-                @result.get("nombreempresa").asText()
-            </label>
-        </li>
-    }
-    </ul>
+
+<div id="tituloresultados2">
+    <span class="texto3">Buscando Nombre de Empresas con la frase 'TAL'</span><br>
+    <span class="titulopag"> Se han encontrado "tantas" empresas que coinciden</span>
+</div>
+
+
+@for(result <- results.getElements()) {
+
+    <table class="empresa" border="0" cellpadding="0" cellspacing="0">
+        <tbody>
+        <tr>
+            <td>
+                <table class="titaviso" width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <td width="6" background='@routes.Assets.at("images/Consult_files/pestanaizq_emp.gif")'</td>
+                        <td class="tituloemp" background='@routes.Assets.at("images/Consult_files/pestanacentro_emp.gif")'>
+                            <a class="link_emp">
+
+                                @result.get("nombreempresa").asText()
+
+                            </a>
+                        </td>
+                        <td width="8" background='@routes.Assets.at("images/Consult_files/pestanader_emp.gif")'></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td style="background-color: rgb(255, 254, 202);">
+
+                <table class="infonom" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <td class="celda_informacion">
+                            <span class="texto">Descripción:</span><br>
+                            <table width="100%" border="0">
+                                <tbody>
+                                <tr>
+                                    <td style="padding-left: 15px;">
+                                        <p class="texto2">
+                                            @if(result.has("descripcionempresa")) {
+                                                @result.get("descripcionempresa").asText()
+                                            } else {
+                                                Descripcion no suministrada.
+                                            }
+                                            </p>
+                                        <p class="texto2">&nbsp;</p></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+
+            <td>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <table class="optaviso" width="100%" border="0" cellpadding="0" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <td width="4" background='@routes.Assets.at("images/Consult_files/barrainfizq_av.gif")'>
+
+                        </td>
+                        <td align="center" background='@routes.Assets.at("images/Consult_files/barrainfcentro_av.gif")'>
+                            <a class="itemaviso"
+                               href="http://paginasamarillas.infoguia.net/PagAm/PagAm.asp?tipo=sucur&;clte=93005327">
+                                Más Información de esta Empresa
+                            </a>
+                        </td>
+                        <td width="4" background='@routes.Assets.at("images/Consult_files/barrainfder_av.gif")'></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+}
+
 }(post_scripts)

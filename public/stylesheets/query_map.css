@@ -33,3 +33,10 @@ div#zoom_element {
     background:#2d86bd;
     position:relative;
 }
+
+#min-label {
+}
+
+#max-label {
+    float : right;
+}

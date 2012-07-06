@@ -56,12 +56,19 @@ $(function() {
         height    : "auto",
         width     : "auto",
         resizable : false,
+        buttons: {
+            "Buscar": function() {
+                $( this ).dialog( "close" );
+                $( "#buscar_btn" ).click();
+            }
+        },
         open : function() {
             query_map();
         }
     });
     $("#query_map_btn").on("click", function() {
         $( "#query_map_cont" ).dialog( "open" );
+        $( "#where_region" ).val("map");
         return false;
     });
 
@@ -76,10 +83,16 @@ $(function() {
 
             $("#whereHow").show();
             if($(this).val() == "-1") {
+
                 $("#whereHow").hide();
+
             } else if($(this).val() == "-2") {
+
                 $( "#query_map_cont" ).dialog( "open" );
+                $( "#where_region" ).val("map");
+
             } else {
+
                 resetOptions($( "#where2" ));
                 $( "#where2" ).combobox("show");
                 $.ajax({
@@ -93,6 +106,7 @@ $(function() {
                     removeOptions($( "#where2" ));
                     addOptions($( "#where2" ), data);
                 });
+
             }
         });
 
@@ -134,16 +148,24 @@ $(function() {
     });
 
     $( "#search_form" ).submit(function() {
-      if($( "#where1" ).val() == "-1" || $( "#where2" ).val() == "-1" ) {
-        $( "#where2, #where3" ).remove();
-      } else {
-        if($( "#where3" ).val() == "-1") {
-          $( "#where1, #where3" ).remove();
+        if($( "#where_region" ).val() == "map") {
+            $( "#where1, #where2, #where3" ).remove();
         } else {
-          $( "#where2, #where3" ).remove();
+
+            $( "#where_llat, #where_llon, #where_glat, #where_glon" ).remove();
+
+            if($( "#where1" ).val() == "-1" || $( "#where2" ).val() == "-1" ) {
+                $( "#where2, #where3" ).remove();
+            } else {
+                if($( "#where3" ).val() == "-1") {
+                    $( "#where1, #where3" ).remove();
+                } else {
+                    $( "#where2, #where3" ).remove();
+                }
+            }
+
         }
-      }
-      return true;
+        return true;
     });
 
     resetOptions($( "#where1" ));

@@ -14,12 +14,11 @@ public class Search {
     public String similar;
 
 
-    @Required
     public String where;
     @Required
     public String where_region;
     public String near;
-    public String lat, lon;
+    public String llat, llng, glat, glng;
 
     public boolean isByCategory() { return what_how.equals("cat"); }
     public boolean isByName()     { return what_how.equals("nam"); }
@@ -40,5 +39,10 @@ public class Search {
         }
     }
     public boolean ExactPlace() { return !NearPlaces(); }
-    public boolean NearPlaces()  { return near != null && near.equals("on"); }
+    public boolean NearPlaces() { return near != null && near.equals("on"); }
+    public Double LLatitude()    { return Double.valueOf(llat); }
+    public Double LLongitude()   { return Double.valueOf(llng); }
+    public Double GLatitude()    { return Double.valueOf(glat); }
+    public Double GLongitude()   { return Double.valueOf(glng); }
+
 }

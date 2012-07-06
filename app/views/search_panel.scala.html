@@ -1,4 +1,5 @@
-<script src='@routes.Assets.at("javascripts/main/index/search_panel.js")' type='text/javascript'></script>
+<script src='@routes.Assets.at("javascripts/main/index/search_panel.js")' type='text/javascript'
+        xmlns="http://www.w3.org/1999/html"></script>
 <script src='@routes.Assets.at("javascripts/main/index/comboBox.js")' type='text/javascript'></script>
 
 <style>
@@ -43,6 +44,7 @@
     @query_map()
 </div>
 
+
 <div class="search_panel">
     <div class="texto" id="title">Buscar en Infoguia.com - Paginas Amarillas</div>
 
@@ -65,8 +67,14 @@
         <div id="where_cont">
             <label for="where1" class="texto">
                 ¿Dónde?
-                <a id="query_map_btn" href="javascript://">Buscar en mapa</a></br>
+                <a id="query_map_btn" href="javascript://">
+                    <img src='@routes.Assets.at("images/en-mapa.png")' alt="Buscar en mapa"/>
+                </a></br>
             </label>
+
+            <input type="hidden" id="where_llat" name="llat" /><input type="hidden" id="where_glat" name="glat" />
+            <input type="hidden" id="where_llng" name="llng" /><input type="hidden" id="where_glng" name="glng" />
+
             <select id="where1" type="text" name="where" >
             </select></br>
 

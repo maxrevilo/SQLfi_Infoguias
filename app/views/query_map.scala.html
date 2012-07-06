@@ -1,16 +1,10 @@
-<!-------------- STYLES ------------>
-<link rel='stylesheet' media='screen' href='@routes.Assets.at("stylesheets/query_map.css")'>
-
-<!-------------- SCRIPTS ------------>
-<script type='text/javascript' src="https://maps.google.com/maps/api/js?&sensor=false"></script>
-<script type="text/javascript" src='@routes.Assets.at("javascripts/main/index/query_map.js")'></script>
-
-
 <p>
     <label for="circle_size">Tamaño de la busqueda:</label>
     <input type="text" id="circle_size" style="width: 75px; border:0; color:#f6931f; font-weight:bold;" />
 </p>
 
+<label id="min-label">0</label>
+<label id="max-label">1500</label>
 <div id="size_slider"></div>
 
 <div id="map_canvas"></div>

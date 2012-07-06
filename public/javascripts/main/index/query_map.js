@@ -1,8 +1,16 @@
 var map, cityCircle, mapOptions, center, only_numbers_patt;
 
+function setBounds () {
+    var bounds = cityCircle.getBounds();
+    $( "#where_llat" ).val( bounds.ca.b );
+    $( "#where_glat" ).val( bounds.ca.j );
+    $( "#where_llng" ).val( bounds.ea.b );
+    $( "#where_glng" ).val( bounds.ea.j );
+}
+
 function query_map(){
     if(map == undefined) {
-        center = new google.maps.LatLng(10.496921301376776, -66.87456739434396);
+        center = new google.maps.LatLng(10.491428, -66.877063);//(10.496921301376776, -66.87456739434396);
 
         mapOptions = {
             zoom   : 20,
@@ -55,6 +63,11 @@ function query_map(){
             var radius = Math.round(cityCircle.radius);
             $( "#circle_size" ).val( radius +" Km" );
             $( "#size_slider" ).slider("option", "value", radius );
+
+            setBounds ();
         };
+
+        cityCircle.center_changed = function() { setBounds (); };
+        setBounds ();
     }
 }

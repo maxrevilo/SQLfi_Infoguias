@@ -118,11 +118,13 @@ public class SQLfiManager {
                                     new StringBuffer(""),
                                     new FieldPosition(0)).toString()
                             );
-                } else {
+                } else if(objetoResultado != null) {
                     nodeResult.put(
                             format[cont-1],
                             objetoResultado.toString()
                     );
+                } else {
+                    /** EMPTY FIELD **/
                 }
 
             }

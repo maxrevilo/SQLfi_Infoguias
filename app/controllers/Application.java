@@ -26,18 +26,18 @@ public class Application extends Controller {
                 //COMPARATOR: similar
                 "DROP COMPARATOR similar ;"
                 ,
-                "CREATE COMPARATOR similar ON nombrecategoria AS (x, y) IN " +
-                    "{ (Restaurante, Arepera) / 0.8, (Arepera, Restaurante) / 0.8, " +
-                    "(Arepera, Arepera) / 1.0, (Zapateria, Zapateria) / 1.0, " +
-                    "(Restaurante, Restaurante) / 1.0, (Restaurant, Restaurante) / 1.0, " +
-                    "(Restaurante, Restaurant) / 1.0, (Restaurant, Restaurant) / 1.0, " +
-                    "(Carniceria, Restaurante) / 0.2, (Restaurante, Carniceria) / 0.2, " +
-                    "(Carniceria, Carniceria) / 1.0, (Carniceria, Restaurant) / 0.2, " +
-                    "(Restaurant, Carniceria) / 0.2, (Carniceria, Arepera) / 0.1, " +
-                    "(Arepera, Carniceria) / 0.1, (Pizzeria, Restaurante) / 0.9, " +
-                    "(Pizzeria, Pizzeria) / 1.0, (Carniceria, Pizzeria) / 0.1, " +
-                    "(Pizzeria, Restaurant) / 0.9, (Restaurant, Pizzeria) / 0.9, " +
-                    "(Pizzeria, Carniceria) / 0.1, (Restaurante, Pizzeria) / 0.9} ;"
+                "CREATE COMPARATOR similar ON nombrecategoria AS (x, y) IN \n" +
+                "    { (Restaurante, Arepera) / 0.8, (Arepera, Restaurante) / 0.8, \n" +
+                "    (Arepera, Arepera) / 1.0, (Zapateria, Zapateria) / 1.0, \n" +
+                "    (Restaurante, Restaurante) / 1.0, (Restaurant, Restaurante) / 1.0, \n" +
+                "    (Restaurante, Restaurant) / 1.0, (Restaurant, Restaurant) / 1.0, \n" +
+                "    (Carniceria, Restaurante) / 0.2, (Restaurante, Carniceria) / 0.2, \n" +
+                "    (Carniceria, Carniceria) / 1.0, (Carniceria, Restaurant) / 0.2, \n" +
+                "    (Restaurant, Carniceria) / 0.2, (Carniceria, Arepera) / 0.1, \n" +
+                "    (Arepera, Carniceria) / 0.1, (Pizzeria, Restaurante) / 0.9, \n" +
+                "    (Pizzeria, Pizzeria) / 1.0, (Carniceria, Pizzeria) / 0.1, \n" +
+                "    (Pizzeria, Restaurant) / 0.9, (Restaurant, Pizzeria) / 0.9, \n" +
+                "    (Pizzeria, Carniceria) / 0.1, (Restaurante, Pizzeria) / 0.9} ;"
                 ,
                 //PREDICADO DIFUSO: cerca_estado
                 "DROP PREDICATE cerca_ciudad ;"
@@ -82,59 +82,78 @@ public class Application extends Controller {
                     switch (search.region()) {
                         case COUNTRY:
                             fuzzyQuery =
-                                "SELECT emp.nombreempresa " +
-                                "FROM paginacioncategorias pag,empresas emp,categorias cat " +
-                                "WHERE " +
-                                "    pag.empresas_codigoempresa = emp.codigoempresa AND " +
-                                "    pag.codigocategoria = cat.codigocategoria AND " +
+                                "SELECT emp.nombreempresa, emp.descripcionempresa\n" +
+                                "FROM paginacioncategorias pag,empresas emp,categorias cat\n" +
+                                "WHERE\n" +
+                                "    pag.empresas_codigoempresa = emp.codigoempresa AND\n" +
+                                "    pag.codigocategoria = cat.codigocategoria AND\n" +
                                 "    cat.nombrecategoria comparator_similar '"+search.what+"' ;";
                             break;
 
                         case STATE:
                             fuzzyQuery =
-                                "SELECT emp.nombreempresa " +
-                                "FROM categorias cat, paginacioncategorias pag, empresas emp, distancias_estados d_e, estados e, dataempresas data " +
-                                "WHERE " +
-                                "    ((estado2 = '"+search.where+"' AND d_e.estado1 = e.codigoestado) OR " +
-                                "    (d_e.estado2 = e.codigoestado AND estado1 = '"+search.where+"')) AND " +
-                                "    d_e.distancia_estados = cerca_estado AND data.codigoempresa = emp.codigoempresa AND data.codigoestado = e.codigoestado AND " +
-                                "    cat.nombrecategoria comparator_similar '"+search.what+"' AND " +
-                                "    pag.codigoempresa = emp.codigoempresa AND " +
+                                "SELECT emp.nombreempresa, emp.descripcionempresa\n" +
+                                "FROM categorias cat, paginacioncategorias pag, empresas emp, distancias_estados d_e, estados e, dataempresas data\n" +
+                                "WHERE\n" +
+                                "    ((estado2 = '"+search.where+"' AND d_e.estado1 = e.codigoestado) OR\n" +
+                                "    (d_e.estado2 = e.codigoestado AND estado1 = '"+search.where+"')) AND\n" +
+                                "    d_e.distancia_estados = cerca_estado AND data.codigoempresa = emp.codigoempresa AND data.codigoestado = e.codigoestado AND\n" +
+                                "    cat.nombrecategoria comparator_similar '"+search.what+"' AND\n" +
+                                "    pag.codigoempresa = emp.codigoempresa AND\n" +
                                 "    pag.codigocategoria = cat.codigocategoria ;";
                             break;
 
                         case CITY:
                             fuzzyQuery =
-                                "SELECT emp.nombreempresa " +
-                                "FROM distancias_ciudades d, ciudades c, categorias cat, paginacioncategorias pag, empresas emp " +
-                                "WHERE " +
-                                "    distancia_ciudades = cerca_ciudad AND " +
-                                "    ((ciudad1 = '"+search.where+"' AND ciudad2 = c.codigociudad) " +
-                                "    OR (ciudad2 = '"+search.where+"' AND ciudad1 = c.codigociudad)) AND " +
-                                "    c.codigociudad = pag.codigociudad AND " +
-                                "    emp.codigoempresa = pag.codigoempresa AND " +
-                                "    cat.codigocategoria = pag.codigocategoria AND " +
+                                "SELECT emp.nombreempresa, emp.descripcionempresa\n" +
+                                "FROM distancias_ciudades d, ciudades c, categorias cat, paginacioncategorias pag, empresas emp\n" +
+                                "WHERE\n" +
+                                "    distancia_ciudades = cerca_ciudad AND\n" +
+                                "    ((ciudad1 = '"+search.where+"' AND ciudad2 = c.codigociudad)\n" +
+                                "    OR (ciudad2 = '"+search.where+"' AND ciudad1 = c.codigociudad)) AND\n" +
+                                "    c.codigociudad = pag.codigociudad AND\n" +
+                                "    emp.codigoempresa = pag.codigoempresa AND\n" +
+                                "    cat.codigocategoria = pag.codigocategoria AND\n" +
                                 "    cat.nombrecategoria comparator_similar '"+search.what+"' ;";
                             break;
 
                         case NEIGHBORHOODS:
                             fuzzyQuery =
-                                    "SELECT emp.nombreempresa " +
-                                            "FROM paginacioncategorias pag,empresas emp,categorias cat " +
-                                            "WHERE " +
-                                            "    pag.empresas_codigoempresa = emp.codigoempresa AND " +
-                                            "    pag.codigocategoria = cat.codigocategoria AND " +
-                                            "    cat.nombrecategoria comparator_similar '"+search.what+"' ;";
+                                    "SELECT emp.nombreempresa, emp.descripcionempresa\n" +
+                                    "FROM paginacioncategorias pag,empresas emp,categorias cat\n" +
+                                    "WHERE\n" +
+                                    "    pag.empresas_codigoempresa = emp.codigoempresa AND\n" +
+                                    "    pag.codigocategoria = cat.codigocategoria AND\n" +
+                                    "    cat.nombrecategoria comparator_similar '"+search.what+"' ;";
                             break;
 
                         case MAP_AREA:
+                            Double  dlat  = 10000.0 * (search.GLatitude() - search.LLatitude()) / 2.0,
+                                    dlng  = 10000.0 * (search.GLongitude() - search.LLongitude()) / 2.0,
+                                    llat  = 10000.0 * search.LLatitude(),
+                                    glat  = 10000.0 * search.GLatitude(),
+                                    llng  = 10000.0 * search.LLongitude(),
+                                    glng  = 10000.0 * search.GLongitude(),
+                                    lllat = (llat - dlat),
+                                    gglat = (glat + dlat),
+                                    lllng = (llng - dlng),
+                                    gglng = (glng + dlng);
+
+                            SQLfiManager.MultipleQueries(
+                                "CREATE FUZZY PREDICATE cerca_lat ON 500000.0..910000.0 AS ("+lllat+", "+llat+", "+glat+", "+gglat+");",
+                                "CREATE FUZZY PREDICATE cerca_lng ON -990000.0..-910000.0 AS ("+lllng+", "+llng+", "+glng+", "+gglng+");"
+                            );
+
                             fuzzyQuery =
-                                    "SELECT emp.nombreempresa " +
-                                            "FROM paginacioncategorias pag,empresas emp,categorias cat " +
-                                            "WHERE " +
-                                            "    pag.empresas_codigoempresa = emp.codigoempresa AND " +
-                                            "    pag.codigocategoria = cat.codigocategoria AND " +
-                                            "    cat.nombrecategoria comparator_similar '"+search.what+"' ;";
+                                    "SELECT emp.nombreempresa, emp.descripcionempresa\n" +
+                                    "FROM paginacioncategorias pag,empresas emp,categorias cat, dataempresas data \n" +
+                                    "WHERE\n" +
+                                    "    data.codigoempresa = emp.codigoempresa AND\n" +
+                                    "    pag.empresas_codigoempresa = emp.codigoempresa AND\n" +
+                                    "    pag.codigocategoria = cat.codigocategoria AND\n" +
+                                    "    cat.nombrecategoria comparator_similar '"+search.what+"' AND\n" +
+                                    "    data.latitud = cerca_lat AND data.longitud = cerca_lng ;";
+
                             break;
 
                         default:
@@ -145,6 +164,7 @@ public class Application extends Controller {
                 else throw new NotSupportedException();
             }
             else throw new NotSupportedException();
+
             System.out.println("QUERY:\n"+fuzzyQuery+"\n\n");
             JsonNode jsonResults =
                     SQLfiManager.ResultToJson( (ConjuntoResultado)
@@ -153,6 +173,11 @@ public class Application extends Controller {
                             )
                     );
 
+            if(search.region() == Search.Region.MAP_AREA) {
+                SQLfiManager.MultipleQueries(
+                        "DROP PREDICATE cerca_lat ;",
+                        "DROP PREDICATE cerca_lng ;");
+            }
             return ok(results.render(jsonResults));
         }
     }
