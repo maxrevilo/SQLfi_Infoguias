@@ -1,3 +1,5 @@
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `categorias`
 --
@@ -10,7 +12,8 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   `secciones_codigoseccion` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`secciones_codigoseccion`,`codigocategoria`),
   KEY `fk_categorias_secciones1` (`secciones_codigoseccion`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=63 ;
+
 
 -- --------------------------------------------------------
 
@@ -25,6 +28,7 @@ CREATE TABLE IF NOT EXISTS `ciudades` (
   PRIMARY KEY (`codigociudad`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 -- --------------------------------------------------------
 
 --
@@ -35,12 +39,11 @@ CREATE TABLE IF NOT EXISTS `ciudad_estado` (
   `codigociudad` smallint(5) unsigned NOT NULL DEFAULT '0',
   `capital` char(1) NOT NULL DEFAULT 'P',
   `codigoestado` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `estados_codigoestado` tinyint(3) unsigned NOT NULL,
-  `ciudades_codigociudad` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ciudades_codigociudad`,`estados_codigoestado`),
-  KEY `fk_ciudad_estado_ciudades1` (`ciudades_codigociudad`),
-  KEY `fk_ciudad_estado_estados1` (`estados_codigoestado`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  PRIMARY KEY (`codigociudad`,`codigoestado`),
+  KEY `fk_ciudad_estado_ciudades1` (`codigociudad`),
+  KEY `fk_ciudad_estado_estados1` (`codigoestado`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -49,24 +52,22 @@ CREATE TABLE IF NOT EXISTS `ciudad_estado` (
 --
 
 CREATE TABLE IF NOT EXISTS `dataempresas` (
-  `codigoempresa` int(10) unsigned NOT NULL DEFAULT '0',
-  `codigosucursal` int(10) unsigned NOT NULL DEFAULT '0',
-  `codigoestado` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `codigociudad` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `codigoempresa` int(10) unsigned NOT NULL,
+  `codigosucursal` int(10) unsigned NOT NULL,
+  `codigoestado` tinyint(3) unsigned NOT NULL,
+  `codigociudad` smallint(5) unsigned NOT NULL,
   `codigourbanizacion` smallint(5) unsigned NOT NULL DEFAULT '0',
   `direccion` varchar(140) DEFAULT NULL,
   `urbanizacion` varchar(60) DEFAULT NULL,
   `telefono` varchar(50) DEFAULT NULL,
   `fax` varchar(25) DEFAULT NULL,
   `email` varchar(80) DEFAULT NULL,
-  `empresas_codigoempresa` int(10) unsigned NOT NULL,
-  `estados_codigoestado` tinyint(3) unsigned NOT NULL,
-  PRIMARY KEY (`empresas_codigoempresa`,`estados_codigoestado`),
-  KEY `fk_dataempresas_estados1` (`estados_codigoestado`)
+  `latitud` decimal(8,2) DEFAULT NULL,
+  `longitud` decimal(8,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- --------------------------------------------------------
 
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `distancias_ciudades`
@@ -76,6 +77,32 @@ CREATE TABLE IF NOT EXISTS `distancias_ciudades` (
   `ciudad1` varchar(30) NOT NULL DEFAULT '',
   `ciudad2` varchar(30) NOT NULL DEFAULT '',
   `distancia_ciudades` int(3) DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `distancias_estados`
+--
+
+CREATE TABLE IF NOT EXISTS `distancias_estados` (
+  `estado1` varchar(25) NOT NULL,
+  `estado2` varchar(25) NOT NULL,
+  `distancia_estados` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `distancias_urbanizaciones`
+--
+
+CREATE TABLE IF NOT EXISTS `distancias_urbanizaciones` (
+  `urb1` varchar(30) NOT NULL DEFAULT '',
+  `urb2` varchar(30) NOT NULL DEFAULT '',
+  `distancia_urbanizaciones` int(3) DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
@@ -116,21 +143,20 @@ CREATE TABLE IF NOT EXISTS `estados` (
 --
 
 CREATE TABLE IF NOT EXISTS `paginacioncategorias` (
-  `codigoempresa` int(10) unsigned NOT NULL DEFAULT '0',
-  `codigocategoria` int(10) unsigned NOT NULL DEFAULT '0',
-  `codigoseccion` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `codigoestado` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `codigociudad` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `tipoaviso` varchar(45) NOT NULL DEFAULT 'R',
+  `codigoempresa` int(10) unsigned NOT NULL,
+  `codigocategoria` smallint(5) unsigned NOT NULL,
+  `codigoseccion` tinyint(3) unsigned NOT NULL,
+  `codigoestado` tinyint(3) unsigned NOT NULL,
+  `codigociudad` smallint(5) unsigned NOT NULL,
+  `tipoaviso` varchar(45) NOT NULL,
   `nombreaviso` varchar(12) DEFAULT NULL,
   `eslogan` varchar(50) DEFAULT NULL,
-  `numeropagina` int(10) unsigned NOT NULL DEFAULT '0',
-  `ordenpagina` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `ordenciudad` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `ordenestado` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `empresas_codigoempresa` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`empresas_codigoempresa`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+  `numeropagina` int(10) unsigned NOT NULL,
+  `ordenpagina` tinyint(3) unsigned NOT NULL,
+  `ordenciudad` tinyint(3) unsigned NOT NULL,
+  `ordenestado` tinyint(3) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 
 -- --------------------------------------------------------
 
@@ -144,6 +170,7 @@ CREATE TABLE IF NOT EXISTS `secciones` (
   PRIMARY KEY (`codigoseccion`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
 -- --------------------------------------------------------
 
 --
@@ -154,43 +181,6 @@ CREATE TABLE IF NOT EXISTS `urbanizaciones` (
   `codigourb` smallint(5) unsigned NOT NULL DEFAULT '0',
   `codigociudad` smallint(5) unsigned NOT NULL DEFAULT '0',
   `nombreurb` varchar(40) DEFAULT NULL,
-  `ciudades_codigociudad` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`ciudades_codigociudad`,`codigourb`),
-  KEY `fk_urbanizaciones_ciudades1` (`ciudades_codigociudad`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `categorias`
---
-ALTER TABLE `categorias`
-  ADD CONSTRAINT `fk_categorias_secciones1` FOREIGN KEY (`secciones_codigoseccion`) REFERENCES `secciones` (`codigoseccion`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `ciudad_estado`
---
-ALTER TABLE `ciudad_estado`
-  ADD CONSTRAINT `fk_ciudad_estado_ciudades1` FOREIGN KEY (`ciudades_codigociudad`) REFERENCES `ciudades` (`codigociudad`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_ciudad_estado_estados1` FOREIGN KEY (`estados_codigoestado`) REFERENCES `estados` (`codigoestado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `dataempresas`
---
-ALTER TABLE `dataempresas`
-  ADD CONSTRAINT `fk_dataempresas_empresas` FOREIGN KEY (`empresas_codigoempresa`) REFERENCES `empresas` (`codigoempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_dataempresas_estados1` FOREIGN KEY (`estados_codigoestado`) REFERENCES `estados` (`codigoestado`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `paginacioncategorias`
---
-ALTER TABLE `paginacioncategorias`
-  ADD CONSTRAINT `fk_paginacioncategorias_empresas1` FOREIGN KEY (`empresas_codigoempresa`) REFERENCES `empresas` (`codigoempresa`) ON DELETE NO ACTION ON UPDATE NO ACTION;
-
---
--- Constraints for table `urbanizaciones`
---
-ALTER TABLE `urbanizaciones`
-  ADD CONSTRAINT `fk_urbanizaciones_ciudades1` FOREIGN KEY (`ciudades_codigociudad`) REFERENCES `ciudades` (`codigociudad`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  PRIMARY KEY (`codigociudad`,`codigourb`),
+  KEY `fk_urbanizaciones_ciudades1` (`codigociudad`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

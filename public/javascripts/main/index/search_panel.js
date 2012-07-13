@@ -64,11 +64,15 @@ $(function() {
         },
         open : function() {
             query_map();
+            $( "#where_region" ).val("map");
+
         }
     });
     $("#query_map_btn").on("click", function() {
-        $( "#query_map_cont" ).dialog( "open" );
-        $( "#where_region" ).val("map");
+        //$( "#query_map_cont" ).dialog( "open" );
+        $( "#where1" ).next("span").children("input").val($( "#where1" )[0].options[1].text);
+        $( "#where1" ).val(-2);
+        $( "#where1" ).change();
         return false;
     });
 
@@ -89,8 +93,6 @@ $(function() {
             } else if($(this).val() == "-2") {
 
                 $( "#query_map_cont" ).dialog( "open" );
-                $( "#where_region" ).val("map");
-
             } else {
 
                 resetOptions($( "#where2" ));
@@ -169,6 +171,8 @@ $(function() {
     });
 
     resetOptions($( "#where1" ));
+
+
     $.ajax({
         url      : "/categories",
         dataType : "json"
@@ -186,6 +190,8 @@ $(function() {
             addOptions($( "#where1" ), data);
         });
     });
+
+
 
 
 });

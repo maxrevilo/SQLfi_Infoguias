@@ -8,9 +8,9 @@ public class Ajax extends Controller {
 
     public static Result categories() throws Exception {
         return SQLfiManager.FastQueryResult(
-                "SELECT nombrecategoria " +
+                "SELECT nombrecategoria, codigocategoria " +
                     "FROM  categorias ;"
-                , new String[]{"label"});
+                , new String[]{"label", "value"});
     }
 
     public static Result states() throws Exception {
@@ -37,7 +37,7 @@ public class Ajax extends Controller {
                 "SELECT nombreurb, codigourb " +
                         "FROM ciudades ciu, urbanizaciones urb " +
                         "WHERE ciu.codigociudad = '"+city_id+"' " +
-                        "AND urb.ciudades_codigociudad = ciu.codigociudad ;"
+                        "AND urb.codigociudad = ciu.codigociudad ;"
                 , new String[]{"Mu", "label", "value"});
     }
 

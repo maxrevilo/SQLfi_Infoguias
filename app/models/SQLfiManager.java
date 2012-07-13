@@ -7,6 +7,8 @@ import java.text.DecimalFormatSymbols;
 import java.text.FieldPosition;
 import javax.transaction.NotSupportedException;
 
+import Cliente.ClienteSQLfi;
+import Global.IGGlobal;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.node.ArrayNode;
 import org.codehaus.jackson.node.ObjectNode;
@@ -20,12 +22,10 @@ import play.mvc.Controller;
 import play.mvc.Results;
 
 
-
-
 public class SQLfiManager {
 
     public static void MultipleQueries(String... strings) throws Exception {
-        ClienteSQLfiImpl app = SQLfiManager.ConnectSQLfi();
+        ClienteSQLfi app = IGGlobal.SQLfiApp();
 
         for(String fuzzyQuery : strings) {
             ObjetoSQLfi obj = app.ejecutarSentencia(fuzzyQuery);
@@ -40,8 +40,6 @@ public class SQLfiManager {
                 System.out.println( "\tString form: "+obj.toString() );
             }
         }
-
-        app.desconectarUsuarios();
     }
 
     public static Results.Status FastQueryResult(String fuzzyQuery) throws Exception {
@@ -58,20 +56,20 @@ public class SQLfiManager {
     }
 
     public static ObjetoSQLfi FastQuery(String fuzzyQuery) throws Exception {
-        ClienteSQLfiImpl app = SQLfiManager.ConnectSQLfi();
+        ClienteSQLfi app = IGGlobal.SQLfiApp();
         ObjetoSQLfi obj = app.ejecutarSentencia(fuzzyQuery);
-        app.desconectarUsuarios();
+
+        System.out.println(  fuzzyQuery );
+        System.out.println("Result\n\tClass: "+obj.getClass().toString()+".");
+
+        if (obj instanceof ResultadoSQLfi) {
+            System.out.println(  "\tTipe: "+String.valueOf( ((ResultadoSQLfi) obj).getTipo() )  );
+            System.out.println(  "\tString form: "+String.valueOf( ((ResultadoSQLfi) obj).toString() )  );
+        } else {
+            System.out.println( "\tString form: "+obj.toString() );
+        }
+
         return obj;
-    }
-
-    public static ClienteSQLfiImpl ConnectSQLfi() throws Exception {
-        ClienteSQLfiImpl app = new ClienteSQLfiImpl();
-
-        // Se carga la configuracion SQLfi del archivo de propiedades.
-        app.cargarConfiguracion();
-        app.conectarUsuarios();
-
-        return app;
     }
 
     public static JsonNode ResultToJson(ConjuntoResultado obj)
