@@ -42,25 +42,27 @@ function query_map(){
 
         $( "#size_slider" ).slider({
                 range : "min",
-                value : 50,
+                value : 1,
                 min   : 0,
-                max   : 1500,
+                max   : 40,
+                step  : 0.1,
                 slide : function( event, ui ) {
                     $( "#circle_size" ).val( ui.value +" Km" );
-                    cityCircle.setRadius(ui.value);
+                    cityCircle.setRadius(ui.value * 1000);
                 }
         });
 
-        $( "#circle_size" ).val($( "#size_slider" ).slider( "value" ) +" Km" );
+        $( "#circle_size" ).val( $( "#size_slider" ).slider( "value" ) +" Km" );
+        cityCircle.setRadius($( "#size_slider" ).slider( "value" ) * 1000);
 
         $( "#circle_size" ).on("change",function(){
             var val = + only_numbers_patt.exec( $( "#circle_size" ).val() );
-            cityCircle.setRadius(val);
+            cityCircle.setRadius(val * 1000);
             $( "#size_slider" ).slider("option", "value", val );
         });
 
         cityCircle.radius_changed = function() {
-            var radius = Math.round(cityCircle.radius);
+            var radius = Math.round(cityCircle.radius) / 1000;
             $( "#circle_size" ).val( radius +" Km" );
             $( "#size_slider" ).slider("option", "value", radius );
 
